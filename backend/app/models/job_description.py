@@ -1,0 +1,9 @@
+from sqlalchemy import Column, Integer, Text
+from app.models.user import Base
+
+class JobDescription(Base):
+    __tablename__ = "job_descriptions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer)
+    description = Column(Text)
