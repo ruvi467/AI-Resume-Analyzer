@@ -126,20 +126,21 @@ function Dashboard() {
         {/* Quick Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Upload Resume Card */}
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-8 hover:scale-[1.02] transition cursor-pointer text-white"
-               onClick={() => alert('Upload feature coming in Day 3!')}>
-            <div className="flex items-center space-x-4">
-              <div className="bg-white/20 p-4 rounded-xl">
-                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">Upload Resume</h3>
-                <p className="text-blue-100 mt-1">Analyze your resume against job descriptions</p>
-              </div>
-            </div>
-          </div>
+          {/* Upload Resume Card */}
+<div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-8 hover:scale-[1.02] transition cursor-pointer text-white"
+     onClick={() => navigate('/upload-resume')}>
+  <div className="flex items-center space-x-4">
+    <div className="bg-white/20 p-4 rounded-xl">
+      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+    </div>
+    <div>
+      <h3 className="text-xl font-bold">Upload Resume</h3>
+      <p className="text-blue-100 mt-1">Analyze your resume against job descriptions</p>
+    </div>
+  </div>
+</div>
 
           {/* Job Description Card */}
           <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-8 hover:scale-[1.02] transition cursor-pointer text-white"
