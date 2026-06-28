@@ -1,22 +1,42 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function Results() {
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const resultData = localStorage.getItem('analysisResult')
-    
-    if (!resultData) {
-      navigate('/dashboard')
-      return
+ useEffect(() => {
+  const fetchResults = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8000/match'
+      )
+
+      setResult(response.data)
+      const analyses =
+        JSON.parse(localStorage.getItem('analyses')) || []
+
+      analyses.push(response.data)
+
+      localStorage.setItem(
+        'analyses',
+        JSON.stringify(analyses)
+      )
+      localStorage.setItem(
+        "analysisResult",
+        JSON.stringify(response.data)
+      )
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
-    
-    setResult(JSON.parse(resultData))
-    setLoading(false)
-  }, [navigate])
+  }
+
+  fetchResults()
+}, [])
 
   const getScoreColor = (score) => {
     if (score >= 80) return 'text-green-600'
@@ -61,7 +81,18 @@ function Results() {
     }
   }
 
-  const displayResult = result || demoResult
+  const displayResult = result
+  console.log(displayResult)
+  ? {
+      ...result,
+      section_scores: {
+        experience: result.ats_score,
+        skills: result.ats_score,
+        education: result.ats_score,
+        formatting: result.ats_score
+      }
+    }
+  : demoResult
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -130,7 +161,7 @@ function Results() {
 
         {/* Section Scores */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {Object.entries(displayResult.section_scores).map(([key, value]) => (
+          {Object.entries(displayResult.section_scores || {}).map(([key, value]) => (
             <div key={key} className="bg-white rounded-xl shadow-sm border p-4 text-center">
               <p className="text-gray-500 text-sm capitalize mb-2">{key}</p>
               <p className={`text-2xl font-bold ${getScoreColor(value)}`}>{value}%</p>
@@ -143,7 +174,7 @@ function Results() {
           <div className="bg-white rounded-xl shadow-sm border p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">✅ Skills Found</h3>
             <div className="flex flex-wrap gap-2">
-              {displayResult.skills_found.map((skill, index) => (
+              {displayResult.matched_skills?.map((skill, index) => (
                 <span
                   key={index}
                   className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium"
@@ -158,7 +189,7 @@ function Results() {
           <div className="bg-white rounded-xl shadow-sm border p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">⚠️ Skills to Add</h3>
             <div className="flex flex-wrap gap-2">
-              {displayResult.skills_missing.map((skill, index) => (
+              {displayResult.missing_skills?.map((skill, index) => (
                 <span
                   key={index}
                   className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium"

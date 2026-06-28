@@ -1,3 +1,4 @@
+from app.routes.dashboard import router as dashboard_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -22,6 +23,7 @@ app.include_router(auth_router)
 app.include_router(resume_router)
 app.include_router(job_router)
 app.include_router(matching_router)
+app.include_router(dashboard_router)
 
 @app.get("/")
 def home():

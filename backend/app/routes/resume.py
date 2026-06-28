@@ -1,6 +1,7 @@
+import shutil
 from fastapi import APIRouter, UploadFile, File, Depends
 from sqlalchemy.orm import Session
-import shutil
+
 
 from app.database.db import get_db
 from app.models.resume import Resume

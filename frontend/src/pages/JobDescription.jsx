@@ -42,26 +42,16 @@ function JobDescription() {
       const resumeId = localStorage.getItem('currentResumeId')
 
       const response = await axios.post(
-        'http://localhost:8000/api/analyze',
-        {
-          resume_id: resumeId,
-          job_description: jobDescription,
-          job_title: jobTitle,
-          company: company
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      )
+      'http://localhost:8000/job-description',
+      {
+      description: jobDescription
+      }
+  )
 
       // Store analysis result
-      localStorage.setItem('analysisResult', JSON.stringify(response.data))
-      
-      // Redirect to results page
-      navigate('/results')
+      localStorage.setItem('jobId', response.data.job_id)
 
+      navigate('/results')
     } catch (err) {
       setError(err.response?.data?.detail || 'Analysis failed. Please try again.')
     } finally {

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import api from '../services/api'
 
 function UploadResume() {
   const [file, setFile] = useState(null)
@@ -8,6 +9,9 @@ function UploadResume() {
   const [uploading, setUploading] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [jobDescription, setJobDescription] = useState('')
+  const [currentStep, setCurrentStep] = useState(1)
+  const [analysisResult, setAnalysisResult] = useState(null)
   const fileInputRef = useRef(null)
   const navigate = useNavigate()
 
@@ -63,34 +67,28 @@ function UploadResume() {
     setError('')
 
     const formData = new FormData()
-    formData.append('resume', file)
+    formData.append('file', file)
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await axios.post(
-        'http://localhost:8000/api/upload-resume',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      )
+  const token = localStorage.getItem('token')
+  const response = await axios.post(
+  'http://localhost:8000/upload-resume',
+  formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  )
 
-      setUploadSuccess(true)
-      
-      // Store the resume ID for later use
-      localStorage.setItem('currentResumeId', response.data.resume_id)
-      
-      // Redirect to job description page after 2 seconds
-      setTimeout(() => {
-        navigate('/job-description')
-      }, 2000)
+  setUploadSuccess(true)
+  console.log("Upload Success")
+  navigate('/job-description')
 
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Upload failed. Please try again.')
-    } finally {
+} catch (error) {
+  console.error(error)
+} finally {
       setUploading(false)
     }
   }

@@ -3,18 +3,38 @@ import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
   const [user, setUser] = useState(null)
+  const [analysis, setAnalysis] = useState(null)
+  const [stats, setStats] = useState({
+    totalAnalyses: 0,
+    averageScore: 0,
+    bestScore: 0
+  })
   const navigate = useNavigate()
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
     const token = localStorage.getItem('token')
-    
-    if (!token || !userData) {
-      navigate('/login')
-      return
-    }
-    
-    setUser(JSON.parse(userData))
+
+    if (!token || !userData || userData === "undefined") {
+     navigate('/login')
+     return
+ }
+
+  setUser(JSON.parse(userData))
+
+   const savedResult = localStorage.getItem('analysisResult')
+
+  if (savedResult) {
+    const result = JSON.parse(savedResult)
+
+    setAnalysis(result)
+
+    setStats({
+      totalAnalyses: 1,
+      averageScore: result.ats_score || 0,
+      bestScore: result.ats_score || 0
+  })
+}
   }, [navigate])
 
   const handleLogout = () => {
@@ -79,7 +99,9 @@ function Dashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Total Analyses</p>
-                <p className="text-4xl font-bold text-gray-800 mt-2">0</p>
+                <p className="text-4xl font-bold text-gray-800 mt-2">
+                  {stats.totalAnalyses}
+                </p>
               </div>
               <div className="bg-blue-100 p-3 rounded-xl">
                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +117,9 @@ function Dashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Average Score</p>
-                <p className="text-4xl font-bold text-gray-300 mt-2">--</p>
+                <p className="text-4xl font-bold text-green-600 mt-2">
+                  {stats.averageScore}%
+                </p>
               </div>
               <div className="bg-green-100 p-3 rounded-xl">
                 <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,7 +135,9 @@ function Dashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Best Score</p>
-                <p className="text-4xl font-bold text-gray-300 mt-2">--</p>
+                <p className="text-4xl font-bold text-purple-600 mt-2">
+                  {stats.bestScore}%
+                </p>
               </div>
               <div className="bg-purple-100 p-3 rounded-xl">
                 <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +170,7 @@ function Dashboard() {
 
           {/* Job Description Card */}
           <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-8 hover:scale-[1.02] transition cursor-pointer text-white"
-               onClick={() => alert('Job description feature coming soon!')}>
+               onClick={() => navigate('/job-description')}>
             <div className="flex items-center space-x-4">
               <div className="bg-white/20 p-4 rounded-xl">
                 <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,11 +193,37 @@ function Dashboard() {
               View All →
             </button>
           </div>
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">📋</div>
-            <p className="text-gray-500 text-lg font-medium">No analyses yet</p>
-            <p className="text-gray-400 mt-2">Upload your first resume to get started!</p>
-          </div>
+          {analysis ? (
+            <div className="p-4">
+              <div className="border rounded-lg p-4">
+                <h4 className="font-bold text-lg">
+                  ATS Score: {analysis.ats_score}%
+                </h4>
+
+                <p className="text-gray-600 mt-2">
+                  Match Percentage: {analysis.match_percentage}%
+                </p>
+
+               <p className="text-green-600 mt-2">
+                Skills Found: {analysis.matched_skills?.join(', ')}
+               </p>
+
+               <p className="text-red-600 mt-2">
+                  Missing Skills: {analysis.missing_skills?.join(', ')}
+               </p>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4">📋</div>
+              <p className="text-gray-500 text-lg font-medium">
+                No analyses yet
+              </p>
+              <p className="text-gray-400 mt-2">
+                Upload your first resume to get started!
+              </p>
+            </div>
+     )}
         </div>
       </main>
     </div>

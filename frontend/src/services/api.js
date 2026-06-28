@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8000/api'
+const API_BASE_URL = 'http://localhost:8000'
 
 // Create axios instance
 const api = axios.create({
@@ -40,7 +40,7 @@ api.interceptors.response.use(
 // Auth APIs
 export const authAPI = {
   login: (email, password) => api.post('/login', { email, password }),
-  register: (name, email, password) => api.post('/register', { name, email, password }),
+  register: (name, email, password) => api.post('/signup', { name, email, password }),
 }
 
 // Resume APIs

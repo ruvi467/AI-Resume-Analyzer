@@ -2,6 +2,7 @@ from extract_text import extract_text
 from parser import parse_resume
 from resume_score import calculate_score
 
+
 text = extract_text("sample_resume.pdf")
 
 details = parse_resume(text)
