@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'https://ai-resume-analyzer-wf2j.onrender.com'
 
 // Create axios instance
 const api = axios.create({
