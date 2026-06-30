@@ -11,7 +11,7 @@ function Results() {
   const fetchResults = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:8000/match'
+        'https://ai-resume-analyzer-wf2j.onrender.com/match'
       )
 
       setResult(response.data)

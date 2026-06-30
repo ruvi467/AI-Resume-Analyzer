@@ -42,7 +42,7 @@ function JobDescription() {
       const resumeId = localStorage.getItem('currentResumeId')
 
       const response = await axios.post(
-      'http://localhost:8000/job-description',
+      'https://ai-resume-analyzer-wf2j.onrender.com/job-description',
       {
       description: jobDescription
       }

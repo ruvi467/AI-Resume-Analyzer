@@ -72,7 +72,7 @@ function UploadResume() {
     try {
   const token = localStorage.getItem('token')
   const response = await axios.post(
-  'http://localhost:8000/upload-resume',
+  'https://ai-resume-analyzer-wf2j.onrender.com/upload-resume',
   formData,
     {
       headers: {
