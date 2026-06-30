@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from app.models.user import Base
+from app.database.db import Base
 
 class Resume(Base):
     __tablename__ = "resumes"
