@@ -15,7 +15,7 @@ function Login() {
     setLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:8000/login', {
+      const response = await axios.post('https://ai-resume-analyzer-wf2j.onrender.com/login', {
         email,
         password
       })
